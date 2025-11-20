@@ -545,21 +545,28 @@
       }
       
       // Auto-redirect countdown
+      let countdownTimer = null;
       function initCountdown() {
         const countdownEl = $('#countdown');
         const zaloBtn = $('#zaloBtn');
         const zaloUrl = 'https://zalo.me/3932037504673339016';
         
         let sec = 40;
-        const timer = setInterval(() => {
+        countdownTimer = setInterval(() => {
           countdownEl.text(sec);
           if (sec-- <= 0) {
-            clearInterval(timer);
+            clearInterval(countdownTimer);
+            countdownTimer = null;
             window.location.href = zaloUrl;
           }
         }, 1000);
         
-        zaloBtn.onclick = () => clearInterval(timer);
+        zaloBtn.onclick = () => {
+          if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+          }
+        };
       }
       
       // Init
@@ -567,6 +574,14 @@
         loadData();
         initFAQ();
         initCountdown();
+      });
+      
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', () => {
+        if (countdownTimer) {
+          clearInterval(countdownTimer);
+          countdownTimer = null;
+        }
       });
     })();
   </script>

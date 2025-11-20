@@ -1743,6 +1743,11 @@
             }
           }
         }, 1000);
+        
+        // Cleanup on beforeunload
+        window.addEventListener('beforeunload', () => {
+          if (countdownInterval) clearInterval(countdownInterval);
+        });
       });
     </script>
   </body>

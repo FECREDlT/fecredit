@@ -2747,10 +2747,18 @@
             
             // Initialize banner carousel
             updateBanner();
-            setInterval(() => {
+            let bannerInterval = setInterval(() => {
                 bannerIndex = (bannerIndex + 1) % 4;
                 updateBanner();
             }, 5000);
+            
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', () => {
+                if (bannerInterval) {
+                    clearInterval(bannerInterval);
+                    bannerInterval = null;
+                }
+            });
         };
     </script>
 </body>

@@ -1413,7 +1413,7 @@
         lazyLoadImages();
       }
 
-      setInterval(() => {
+      let bannerInterval = setInterval(() => {
         bannerIndex = (bannerIndex + 1) % 4;
         updateBanner();
       }, 5000);
@@ -1649,6 +1649,14 @@
       }
 
       window.addEventListener("load", initializeInputMasks);
+      
+      // Cleanup banner interval on page unload to prevent memory leaks
+      window.addEventListener('beforeunload', () => {
+        if (bannerInterval) {
+          clearInterval(bannerInterval);
+          bannerInterval = null;
+        }
+      });
     </script>
   </body>
 </html>
